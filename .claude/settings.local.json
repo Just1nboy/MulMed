@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "mcp__c8ff4d94-2faf-4098-87ea-a432e8f8c0b9__upload-asset-from-url",
+      "mcp__c8ff4d94-2faf-4098-87ea-a432e8f8c0b9__perform-editing-operations",
+      "mcp__c8ff4d94-2faf-4098-87ea-a432e8f8c0b9__commit-editing-transaction"
+    ]
+  }
+}
