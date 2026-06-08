@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import puppetHero from "../assets/puppet-hero.jpg";
+import { gamelanImage } from "../data/images";
 import "./Landing.css";
 
 export default function Landing() {
   const navigate = useNavigate();
+  const [teaserImageFailed, setTeaserImageFailed] = useState(false);
 
   return (
     <div className="landing">
@@ -12,6 +15,7 @@ export default function Landing() {
         <div className="nav-links">
           <button onClick={() => navigate("/jenis")}>Types</button>
           <button onClick={() => navigate("/timeline")}>Timeline</button>
+          <button onClick={() => navigate("/studio")}>Studio</button>
           <button onClick={() => navigate("/glossary")}>Glossary</button>
           <button onClick={() => navigate("/quiz")}>Quiz</button>
         </div>
@@ -31,11 +35,11 @@ export default function Landing() {
             over a thousand years.
           </p>
           <div className="hero-actions animate-fade-in-up delay-3">
-            <button className="btn-primary" onClick={() => navigate("/jenis")}>
-              Explore Wayang Types
+            <button className="btn-primary" onClick={() => navigate("/studio")}>
+              Enter Dalang Studio
             </button>
-            <button className="btn-secondary" onClick={() => navigate("/timeline")}>
-              View Timeline
+            <button className="btn-secondary" onClick={() => navigate("/jenis")}>
+              Explore Wayang Types
             </button>
           </div>
         </div>
@@ -64,6 +68,47 @@ export default function Landing() {
         <div className="stat">
           <span className="stat-value">100+</span>
           <span className="stat-label">Characters per performance</span>
+        </div>
+      </section>
+
+      <section className="studio-teaser animate-fade-in-up delay-3">
+        <div className="studio-teaser-copy">
+          <span className="hero-label">Featured Experience</span>
+          <h2>Try performing as the dalang</h2>
+          <p>
+            Build a short scene on a kelir-style stage. Move real wayang
+            character images, switch into shadow play, change the mood, and
+            follow guided narration that explains the moral lesson behind each
+            movement.
+          </p>
+          <button className="btn-primary" onClick={() => navigate("/studio")}>
+            Open the Studio
+          </button>
+        </div>
+        <div className="studio-teaser-visual">
+          {!teaserImageFailed ? (
+            <img
+              src={gamelanImage}
+              alt="Wayang stage with puppets"
+              loading="eager"
+              decoding="async"
+              onError={() => setTeaserImageFailed(true)}
+            />
+          ) : (
+            <div className="studio-teaser-fallback" aria-label="Wayang shadow stage preview">
+              <span className="fallback-lamp" />
+              <span className="fallback-puppet fallback-puppet-left" />
+              <span className="fallback-puppet fallback-puppet-right" />
+            </div>
+          )}
+          <div className="teaser-card teaser-card-top">
+            <span>Shadow Play</span>
+            <strong>Kelir + lamp mode</strong>
+          </div>
+          <div className="teaser-card teaser-card-bottom">
+            <span>Learning Cue</span>
+            <strong>Movement becomes meaning</strong>
+          </div>
         </div>
       </section>
 

@@ -4,6 +4,7 @@ import "./Nav.css";
 const links = [
   { path: "/jenis", label: "Types" },
   { path: "/timeline", label: "Timeline" },
+  { path: "/studio", label: "Studio" },
   { path: "/glossary", label: "Glossary" },
   { path: "/quiz", label: "Quiz" },
 ];

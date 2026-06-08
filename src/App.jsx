@@ -5,6 +5,7 @@ import WayangDetail from "./pages/WayangDetail";
 import Timeline from "./pages/Timeline";
 import Glossary from "./pages/Glossary";
 import Quiz from "./pages/Quiz";
+import DalangStudio from "./pages/DalangStudio";
 import "./styles/global.css";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/timeline" element={<Timeline />} />
         <Route path="/glossary" element={<Glossary />} />
         <Route path="/quiz" element={<Quiz />} />
+        <Route path="/studio" element={<DalangStudio />} />
       </Routes>
     </BrowserRouter>
   );

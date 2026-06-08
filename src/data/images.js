@@ -14,11 +14,11 @@ export const typeImages = {
 
 export const characterImages = {
   arjuna:
-    "https://upload.wikimedia.org/wikipedia/commons/3/3f/Ardjoena%2C_KITLV_36C87.tiff",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Ardjoena%2C_KITLV_36C87.tiff/lossy-page1-960px-Ardjoena%2C_KITLV_36C87.tiff.jpg",
   bima:
     "https://upload.wikimedia.org/wikipedia/commons/a/a8/Bima_from_Java%2C_Indonesia%2C_cotton%2C_1910s%2C_East-West_Center.JPG",
   gatotkaca:
-    "https://upload.wikimedia.org/wikipedia/commons/0/0c/Gatotkatja%2C_KITLV_36C101.tiff",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Gatotkatja%2C_KITLV_36C101.tiff/lossy-page1-960px-Gatotkatja%2C_KITLV_36C101.tiff.jpg",
   sinta:
     "https://upload.wikimedia.org/wikipedia/commons/a/af/Wayang_Kulit%3B_Kayonan_%28tree_of_life%29%2C_Arjuna_and_Sumbadra_from_Java.JPG",
   rama:
@@ -35,4 +35,4 @@ export const heroImage =
   "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/113_Wayang_Kulit%2C_Ramayana_and_Mahabharata%2C_Setia_Darma_Mask_and_Puppet_House%2C_Ubud%2C_Bali%2C_photograph_by_Anandajoti_Bhikkhu.jpg/1280px-113_Wayang_Kulit%2C_Ramayana_and_Mahabharata%2C_Setia_Darma_Mask_and_Puppet_House%2C_Ubud%2C_Bali%2C_photograph_by_Anandajoti_Bhikkhu.jpg";
 
 export const gamelanImage =
-  "https://upload.wikimedia.org/wikipedia/commons/1/16/1_collection_of_Indonesian_musical_instruments%2C_screen_and_puppets_for_wayang_kulit_Mahabharata_show.jpg";
+  heroImage;

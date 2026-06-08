@@ -160,7 +160,6 @@ export default function WayangViewer({ character, onClose }) {
   const { pos, wa } = fk(angles);
 
   const renderBone = (name) => {
-    const bone = SKELETON[name];
     const style = BONE_STYLE[name];
     if (!style) return null;
 
