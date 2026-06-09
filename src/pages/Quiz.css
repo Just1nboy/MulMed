@@ -4,6 +4,10 @@
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(201, 164, 86, 0.08), transparent 32%),
+    var(--bg-card);
 }
 
 .quiz-progress {
@@ -62,6 +66,7 @@
 
 .quiz-option:hover:not(.correct):not(.wrong) {
   border-color: var(--accent);
+  transform: translateX(4px);
 }
 
 .quiz-option.selected {
@@ -173,4 +178,23 @@
   font-size: 1rem;
   color: var(--text-secondary);
   margin: 1rem 0 2rem;
+}
+
+/* Printed examination sheet */
+.quiz-card,
+.quiz-option,
+.option-letter,
+.quiz-explanation {
+  border-radius: 0;
+}
+
+.quiz-card {
+  background: var(--bg-card);
+  border: 3px double var(--border);
+  box-shadow: none;
+}
+
+.quiz-option:hover:not(.correct):not(.wrong) {
+  transform: none;
+  box-shadow: inset 3px 0 0 var(--accent);
 }

@@ -33,6 +33,13 @@
   border-radius: var(--radius-md);
   margin-bottom: 1.5rem;
   background: var(--bg-alt);
+  filter: saturate(0.78) sepia(0.1);
+  transition: filter 0.6s ease, transform 0.6s ease;
+}
+
+.detail-hero-img:hover {
+  filter: saturate(1) sepia(0);
+  transform: scale(1.012);
 }
 
 /* Info grid */
@@ -47,6 +54,12 @@
   background: var(--bg-alt);
   border-radius: var(--radius-sm);
   padding: 1rem 1.15rem;
+  transition: transform 0.22s ease, background 0.22s ease;
+}
+
+.info-item:hover {
+  transform: translateY(-4px);
+  background: var(--accent-subtle);
 }
 
 .info-label {
@@ -265,5 +278,107 @@
   }
   .char-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Archival object record */
+.detail-hero-img,
+.char-card,
+.char-card-img,
+.char-detail,
+.info-item,
+.tag,
+.btn-outline,
+.fun-fact {
+  border-radius: 0;
+}
+
+.detail-hero-img {
+  border: 3px double var(--border);
+}
+
+.info-item {
+  border-top: 1px solid var(--border);
+  background: transparent;
+}
+
+.info-item:hover,
+.char-card:hover {
+  transform: none;
+  background: var(--bg-alt);
+}
+
+.char-card {
+  box-shadow: none;
+}
+
+.experience-section {
+  margin: 2.5rem 0;
+  border: 3px double var(--border);
+  background: var(--bg-card);
+}
+
+.experience-heading {
+  padding: 1.35rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.experience-heading h2 {
+  margin-top: 0.3rem;
+  font-size: 1.45rem;
+}
+
+.experience-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.experience-grid > div {
+  padding: 1.35rem 1.5rem;
+}
+
+.experience-grid > div + div {
+  border-left: 1px solid var(--border);
+}
+
+.experience-grid span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--accent);
+  font-family: Arial, sans-serif;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.experience-grid p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.experience-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.experience-links button {
+  padding: 0;
+  background: transparent;
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .experience-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .experience-grid > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--border);
   }
 }

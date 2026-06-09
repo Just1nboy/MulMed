@@ -6,20 +6,29 @@ import Timeline from "./pages/Timeline";
 import Glossary from "./pages/Glossary";
 import Quiz from "./pages/Quiz";
 import DalangStudio from "./pages/DalangStudio";
+import SymbolismExplorer from "./pages/SymbolismExplorer";
+import PageEffects from "./components/PageEffects";
+import AudioSystem from "./audio/AudioSystem";
+import AudioToggle from "./audio/AudioToggle";
 import "./styles/global.css";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/jenis" element={<JenisWayang />} />
-        <Route path="/jenis/:typeId" element={<WayangDetail />} />
-        <Route path="/timeline" element={<Timeline />} />
-        <Route path="/glossary" element={<Glossary />} />
-        <Route path="/quiz" element={<Quiz />} />
-        <Route path="/studio" element={<DalangStudio />} />
-      </Routes>
+      <AudioSystem>
+        <PageEffects />
+        <AudioToggle />
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/jenis" element={<JenisWayang />} />
+          <Route path="/jenis/:typeId" element={<WayangDetail />} />
+          <Route path="/timeline" element={<Timeline />} />
+          <Route path="/glossary" element={<Glossary />} />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/studio" element={<DalangStudio />} />
+          <Route path="/symbolism" element={<SymbolismExplorer />} />
+        </Routes>
+      </AudioSystem>
     </BrowserRouter>
   );
 }

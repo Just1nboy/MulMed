@@ -1,0 +1,319 @@
+.symbolism-page {
+  padding-bottom: 6rem;
+}
+
+.symbolism-shell {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.95fr) minmax(320px, 1.05fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.symbolism-visual {
+  position: relative;
+  min-height: 650px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 164, 86, 0.28);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 50% 15%, rgba(255, 220, 135, 0.25), transparent 32%),
+    linear-gradient(160deg, #2a1c11, #0b0b0b 78%);
+  box-shadow: var(--shadow-lg);
+}
+
+.symbolism-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(201, 164, 86, 0.04) 1px, transparent 1px);
+  background-size: 26px 100%;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.symbolism-visual img {
+  width: 100%;
+  height: 100%;
+  min-height: 650px;
+  object-fit: contain;
+  filter: sepia(0.3) contrast(1.08) drop-shadow(22px 24px 24px rgba(0, 0, 0, 0.46));
+  transform: scale(0.92);
+  animation: symbolPuppetFloat 7s ease-in-out infinite;
+}
+
+.symbolism-lamp {
+  position: absolute;
+  z-index: 1;
+  top: -90px;
+  left: 50%;
+  width: 320px;
+  height: 260px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 120, 0.55), transparent 68%);
+  animation: lampBreathe 4s ease-in-out infinite;
+}
+
+.symbol-hotspot {
+  position: absolute;
+  z-index: 3;
+  width: 42px;
+  height: 42px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 232, 166, 0.7);
+  border-radius: 50%;
+  color: #fff2c9;
+  background: rgba(20, 20, 20, 0.72);
+  box-shadow: 0 0 0 7px rgba(201, 164, 86, 0.08), 0 0 24px rgba(201, 164, 86, 0.45);
+  backdrop-filter: blur(7px);
+  animation: hotspotIn 0.6s ease both;
+  animation-delay: var(--hotspot-delay);
+  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.symbol-hotspot:hover,
+.symbol-hotspot.active {
+  transform: translate(-50%, -50%) scale(1.16);
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 0 9px rgba(201, 164, 86, 0.12), 0 0 36px rgba(201, 164, 86, 0.75);
+}
+
+.symbol-hotspot.discovered::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(201, 164, 86, 0.42);
+  border-radius: inherit;
+  animation: symbolPing 2.4s ease-out infinite;
+}
+
+.symbolism-caption {
+  position: absolute;
+  z-index: 3;
+  left: 1rem;
+  bottom: 1rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(201, 164, 86, 0.25);
+  border-radius: 99px;
+  color: #f3dfad;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(8px);
+  font-size: 0.72rem;
+  font-weight: 700;
+  animation: captionGlow 3s ease-in-out infinite;
+}
+
+.symbolism-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.discovery-meter,
+.symbolism-card,
+.symbolism-complete {
+  padding: 1.25rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: rgba(30, 30, 30, 0.82);
+  backdrop-filter: blur(10px);
+}
+
+.discovery-meter > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.discovery-meter strong {
+  color: var(--accent);
+}
+
+.discovery-track {
+  height: 5px;
+  margin-top: 0.75rem;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--border-light);
+}
+
+.discovery-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), #f0d28e);
+  box-shadow: 0 0 16px rgba(201, 164, 86, 0.5);
+  transition: width 0.35s ease;
+}
+
+.symbolism-card {
+  min-height: 220px;
+  animation: symbolCardIn 0.35s ease;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(201, 164, 86, 0.13), transparent 36%),
+    var(--bg-card);
+}
+
+.symbolism-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.symbolism-card p {
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.symbolism-prompt {
+  margin-top: 1rem;
+  padding: 0.75rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+  font-size: 0.82rem;
+}
+
+.symbol-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+
+.symbol-list button {
+  padding: 0.85rem;
+  text-align: left;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text);
+  transition: 0.2s ease;
+}
+
+.symbol-list button:hover,
+.symbol-list button.active {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.symbol-list span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.symbol-list strong {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+}
+
+.symbolism-complete {
+  border-color: rgba(111, 207, 138, 0.3);
+  background: rgba(45, 138, 78, 0.1);
+  animation: symbolCardIn 0.4s ease;
+}
+
+.symbolism-complete span,
+.symbolism-complete strong {
+  display: block;
+}
+
+.symbolism-complete span {
+  color: #6fcf8a;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.symbolism-complete strong {
+  margin-top: 0.25rem;
+}
+
+@keyframes hotspotIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes symbolPing {
+  to { transform: scale(1.45); opacity: 0; }
+}
+
+@keyframes symbolCardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lampBreathe {
+  50% { opacity: 0.72; transform: translateX(-50%) scale(1.08); }
+}
+
+@keyframes symbolPuppetFloat {
+  50% { transform: scale(0.94) translateY(-6px); filter: sepia(0.38) contrast(1.1) drop-shadow(26px 30px 30px rgba(0, 0, 0, 0.52)); }
+}
+
+@keyframes captionGlow {
+  50% { border-color: rgba(201, 164, 86, 0.5); box-shadow: 0 0 18px rgba(201, 164, 86, 0.14); }
+}
+
+@media (max-width: 800px) {
+  .symbolism-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .symbolism-visual,
+  .symbolism-visual img {
+    min-height: 560px;
+  }
+}
+
+@media (max-width: 520px) {
+  .symbol-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Curatorial exhibit styling */
+.symbolism-visual,
+.discovery-meter,
+.symbolism-card,
+.symbolism-complete,
+.symbol-list button,
+.symbolism-prompt,
+.symbolism-caption {
+  border-radius: 0;
+}
+
+.symbolism-visual {
+  border: 3px double var(--border);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+.discovery-meter,
+.symbolism-card,
+.symbolism-complete {
+  background: var(--bg-card);
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.symbolism-card {
+  background: var(--bg-card);
+}
+
+.symbol-list button:hover,
+.symbol-list button.active {
+  transform: none;
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.symbolism-caption {
+  animation: none;
+  background: var(--bg);
+}

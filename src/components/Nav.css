@@ -5,6 +5,8 @@
   padding: 1.5rem 0;
   border-bottom: 1px solid var(--border);
   margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 20;
 }
 
 .nav-logo {
@@ -14,6 +16,7 @@
   color: var(--accent);
   background: none;
   padding: 0;
+  text-shadow: 0 0 24px rgba(201, 164, 86, 0.35);
 }
 
 .nav-links {
@@ -39,4 +42,47 @@
   background: var(--accent-light);
   color: var(--accent);
   font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .nav {
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .nav-links {
+    max-width: calc(100vw - 8rem);
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+  }
+
+  .nav-link {
+    flex-shrink: 0;
+  }
+}
+
+/* Archival theatre navigation */
+.nav {
+  border-bottom: 3px double var(--border);
+}
+
+.nav-logo {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+
+.nav-link {
+  border-radius: 0;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: transparent;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }

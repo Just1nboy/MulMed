@@ -7,6 +7,45 @@ import StoryModal from "../components/StoryModal";
 import Nav from "../components/Nav";
 import "./WayangDetail.css";
 
+const typeExperiences = {
+  "wayang-kulit": {
+    audience: "The audience reads a world of moving shadows while the dalang, lamp, puppets, and orchestra remain active behind the kelir.",
+    movement: "Flat articulated arms create precise gestures; distance from the lamp changes the size and sharpness of the silhouette.",
+    links: [
+      { label: "Try shadow performance", path: "/studio" },
+      { label: "Read puppet symbolism", path: "/symbolism" },
+      { label: "Learn kelir and blencong", path: "/glossary?term=Kelir" },
+    ],
+  },
+  "wayang-golek": {
+    audience: "The carved wooden puppets perform directly in view, allowing audiences to read costume, face, and three-dimensional movement.",
+    movement: "A central rod supports the body while separate rods guide the hands; the head can rotate to redirect attention.",
+    links: [
+      { label: "Perform a Ramayana scene", path: "/studio" },
+      { label: "Learn about the sinden", path: "/glossary?term=Sinden" },
+      { label: "Follow its history", path: "/timeline" },
+    ],
+  },
+  "wayang-klitik": {
+    audience: "Flat painted wooden figures are viewed directly rather than only as shadows, often accompanied by the sound of wood in motion.",
+    movement: "The rigid wooden body produces a compact, rhythmic performance style distinct from leather shadow puppets.",
+    links: [
+      { label: "Meet the Panji Cycle", path: "/glossary?term=Panji%20Cycle" },
+      { label: "Follow regional change", path: "/timeline" },
+      { label: "Compare all traditions", path: "/jenis" },
+    ],
+  },
+  "wayang-orang": {
+    audience: "Human performers embody the posture, costume, movement, and character qualities associated with wayang figures.",
+    movement: "Classical dance translates puppet-like refinement, force, and gesture into the performer's whole body.",
+    links: [
+      { label: "Learn about court patronage", path: "/glossary?term=Keraton" },
+      { label: "See court traditions", path: "/timeline" },
+      { label: "Read visual symbolism", path: "/symbolism" },
+    ],
+  },
+};
+
 export default function WayangDetail() {
   const { typeId } = useParams();
   const navigate = useNavigate();
@@ -26,6 +65,7 @@ export default function WayangDetail() {
   }
 
   const headerImg = typeImages[typeId];
+  const experience = typeExperiences[typeId];
 
   return (
     <div className="page-container">
@@ -72,6 +112,32 @@ export default function WayangDetail() {
           </div>
         )}
       </section>
+
+      {experience && (
+        <section className="experience-section">
+          <div className="experience-heading">
+            <span className="panel-kicker">How it works</span>
+            <h2>Experience the performance</h2>
+          </div>
+          <div className="experience-grid">
+            <div>
+              <span>What the audience sees</span>
+              <p>{experience.audience}</p>
+            </div>
+            <div>
+              <span>How movement creates meaning</span>
+              <p>{experience.movement}</p>
+            </div>
+          </div>
+          <div className="experience-links">
+            {experience.links.map((link) => (
+              <button key={link.path} onClick={() => navigate(link.path)}>
+                {link.label} →
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
       {wayangType.characters.length > 0 && (
         <>

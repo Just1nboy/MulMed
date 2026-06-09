@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Nav from "../components/Nav";
+import { useAudio } from "../audio/AudioContext";
 import "./Quiz.css";
 
 const questions = [
@@ -96,6 +97,7 @@ const questions = [
 ];
 
 export default function Quiz() {
+  const { playSfx } = useAudio();
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
@@ -112,6 +114,7 @@ export default function Quiz() {
   const handleConfirm = () => {
     if (selected === null) return;
     setConfirmed(true);
+    playSfx(selected === qn.answer ? "correct" : "wrong");
     if (selected === qn.answer) {
       setScore((s) => s + 1);
     }

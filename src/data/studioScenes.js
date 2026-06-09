@@ -56,6 +56,23 @@ export const studioScenes = [
           "Sinta refuses luxury, power, and fear. Her stillness becomes stronger than the palace walls around her.",
         learningPoint:
           "Stillness can be dramatic in wayang. A dalang can show inner strength with slow, controlled movement.",
+        decision: {
+          question: "How should the dalang portray Sinta's strength?",
+          choices: [
+            {
+              id: "quiet",
+              label: "Quiet and unwavering",
+              result: "Her stillness makes Rahwana's restless power look weaker.",
+              insight: "Refined characters often communicate strength through controlled movement.",
+            },
+            {
+              id: "defiant",
+              label: "Loud and defiant",
+              result: "The scene becomes more confrontational and shifts attention toward open conflict.",
+              insight: "A valid modern interpretation, though it changes the traditional visual contrast.",
+            },
+          ],
+        },
       },
       {
         title: "Rahwana's Threat",
@@ -136,6 +153,23 @@ export const studioScenes = [
           "Arjuna sees the battlefield and feels the weight of family, duty, and consequence in a single breath.",
         learningPoint:
           "Wayang heroes are not flat symbols. Their doubts make the moral lesson more human.",
+        decision: {
+          question: "What should the audience feel during Arjuna's hesitation?",
+          choices: [
+            {
+              id: "empathy",
+              label: "Empathy for his doubt",
+              result: "The audience sees moral courage beginning with honest uncertainty.",
+              insight: "Wayang often makes heroes compelling by showing their inner conflict.",
+            },
+            {
+              id: "urgency",
+              label: "Urgency to act",
+              result: "The scene emphasizes duty and the consequences of waiting.",
+              insight: "Faster pacing strengthens tension but leaves less room for reflection.",
+            },
+          ],
+        },
       },
       {
         title: "Bima Speaks Plainly",

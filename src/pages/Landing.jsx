@@ -16,12 +16,18 @@ export default function Landing() {
           <button onClick={() => navigate("/jenis")}>Types</button>
           <button onClick={() => navigate("/timeline")}>Timeline</button>
           <button onClick={() => navigate("/studio")}>Studio</button>
+          <button onClick={() => navigate("/symbolism")}>Symbols</button>
           <button onClick={() => navigate("/glossary")}>Glossary</button>
           <button onClick={() => navigate("/quiz")}>Quiz</button>
         </div>
       </nav>
 
       <section className="hero">
+        <div className="hero-stage-lines" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
         <div className="hero-content">
           <p className="hero-label animate-fade-in">Indonesian Cultural Heritage</p>
           <h1 className="hero-title animate-fade-in-up delay-1">
@@ -45,7 +51,9 @@ export default function Landing() {
         </div>
 
         <div className="hero-visual">
+          <span className="hero-halo" aria-hidden="true" />
           <img src={puppetHero} alt="Wayang Kulit puppet" className="hero-img animate-fade-in delay-2" />
+          <span className="hero-shadow" aria-hidden="true" />
         </div>
       </section>
 
@@ -113,6 +121,15 @@ export default function Landing() {
       </section>
 
       <section className="intro-cards">
+        <button className="intro-card intro-card-featured animate-fade-in-up delay-2" onClick={() => navigate("/symbolism")}>
+          <span className="hero-label">Interactive Explorer</span>
+          <h3>Read a Puppet's Hidden Language</h3>
+          <p>
+            Discover how eyes, posture, crowns, colors, and gestures reveal a
+            character's personality before the story even begins.
+          </p>
+          <span className="type-link">Explore symbolism &rarr;</span>
+        </button>
         <div className="intro-card animate-fade-in-up delay-3">
           <h3>The Dalang</h3>
           <p>

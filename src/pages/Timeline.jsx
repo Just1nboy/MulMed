@@ -1,88 +1,96 @@
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Nav from "../components/Nav";
+import { timelineCategories, timelineEras, timelineEvents } from "../data/timeline";
 import "./Timeline.css";
 
-const events = [
-  {
-    year: "~800 CE",
-    title: "Earliest Evidence",
-    desc: "The oldest known reference to wayang appears in a Javanese court inscription (Prasasti Balitung), mentioning a performance called 'si Galigi mawayang' — evidence that shadow play was already established in royal courts.",
-  },
-  {
-    year: "~900 CE",
-    title: "Hindu-Buddhist Influence",
-    desc: "Indian epics Mahabharata and Ramayana arrive in Java through Hindu-Buddhist trade routes. Javanese artists adapt these stories, blending them with local animistic beliefs and ancestor worship traditions.",
-  },
-  {
-    year: "~1000 CE",
-    title: "Wayang Kulit Takes Shape",
-    desc: "The flat leather puppet form we know today as Wayang Kulit becomes the dominant art form in Javanese courts. The kelir (screen) and blencong (oil lamp) setup becomes standardized.",
-  },
-  {
-    year: "~1400s",
-    title: "Islamic Adaptation",
-    desc: "As Islam spreads through Java, wayang puppets are redesigned to avoid realistic human depiction — leading to the stylized, elongated forms seen today. The stories gain layers of Sufi mysticism.",
-  },
-  {
-    year: "~1500s",
-    title: "Wayang Golek Emerges",
-    desc: "Three-dimensional wooden rod puppets develop in Sundanese (West Java) culture. Unlike the shadow-based Wayang Kulit, Wayang Golek performs in full view of the audience.",
-  },
-  {
-    year: "~1600s",
-    title: "Wayang Orang Begins",
-    desc: "The royal courts of Surakarta and Yogyakarta develop Wayang Orang — live dance drama where human performers embody wayang characters with elaborate costumes and classical Javanese dance.",
-  },
-  {
-    year: "1755",
-    title: "Court Culture Peak",
-    desc: "After the Treaty of Giyanti splits the Mataram Sultanate, both successor courts (Surakarta and Yogyakarta) compete in patronizing wayang arts, leading to a golden age of performance and puppet craftsmanship.",
-  },
-  {
-    year: "1945",
-    title: "Independence & National Identity",
-    desc: "Following Indonesian independence, wayang is embraced as a symbol of national cultural identity. Performances begin incorporating contemporary themes alongside traditional epics.",
-  },
-  {
-    year: "2003",
-    title: "UNESCO Recognition",
-    desc: "UNESCO proclaims Wayang as a Masterpiece of the Oral and Intangible Heritage of Humanity, recognizing its significance to world culture and urging preservation efforts.",
-  },
-  {
-    year: "Present",
-    title: "Modern Revival",
-    desc: "Contemporary dalang experiment with new formats: shortened performances, modern themes, digital projections, and social media. Universities now offer formal programs in dalang studies.",
-  },
-];
-
 export default function Timeline() {
-  return (
-    <div className="page-container">
-      <Nav />
+  const navigate = useNavigate();
+  const [activeEra, setActiveEra] = useState("all");
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedId, setSelectedId] = useState(timelineEvents[0].id);
 
-      <header className="page-header animate-fade-in-up">
+  const events = useMemo(
+    () => timelineEvents.filter((event) =>
+      (activeEra === "all" || event.era === activeEra) &&
+      (activeCategory === "All" || event.category === activeCategory)
+    ),
+    [activeCategory, activeEra]
+  );
+  const selectedEvent = events.find((event) => event.id === selectedId) || events[0];
+
+  const changeFilter = (era, category) => {
+    setActiveEra(era);
+    setActiveCategory(category);
+    const firstMatch = timelineEvents.find((event) =>
+      (era === "all" || event.era === era) &&
+      (category === "All" || event.category === category)
+    );
+    if (firstMatch) setSelectedId(firstMatch.id);
+  };
+
+  return (
+    <div className="page-container timeline-page">
+      <Nav />
+      <header className="page-header">
         <span className="badge">History</span>
         <h1>Timeline of Wayang</h1>
-        <p className="page-subtitle">
-          Over a thousand years of evolution — from ancient court rituals to
-          UNESCO-recognized world heritage.
-        </p>
+        <p className="page-subtitle">Follow how wayang changes across belief systems, courts, regions, and modern stages while remaining a living tradition.</p>
       </header>
 
-      <div className="timeline">
-        {events.map((ev, i) => (
-          <div className="tl-item animate-slide-in-left" key={i} style={{ animationDelay: `${i * 0.1}s` }}>
-            <div className="tl-marker">
-              <div className="tl-dot" />
-              {i < events.length - 1 && <div className="tl-line" />}
-            </div>
-            <div className="tl-content">
-              <span className="tl-year">{ev.year}</span>
-              <h3 className="tl-title">{ev.title}</h3>
-              <p className="tl-desc">{ev.desc}</p>
-            </div>
-          </div>
+      <section className="era-strip" aria-label="Filter by historical era">
+        <button className={activeEra === "all" ? "active" : ""} onClick={() => changeFilter("all", activeCategory)}>
+          <span>Full story</span><strong>All eras</strong>
+        </button>
+        {timelineEras.map((era) => (
+          <button key={era.id} className={activeEra === era.id ? "active" : ""} onClick={() => changeFilter(era.id, activeCategory)}>
+            <span>{era.range}</span><strong>{era.label}</strong>
+          </button>
+        ))}
+      </section>
+
+      {activeEra !== "all" && <p className="era-summary">{timelineEras.find((era) => era.id === activeEra)?.summary}</p>}
+
+      <div className="timeline-filters" aria-label="Filter by theme">
+        {timelineCategories.map((category) => (
+          <button key={category} className={activeCategory === category ? "active" : ""} onClick={() => changeFilter(activeEra, category)}>{category}</button>
         ))}
       </div>
+
+      <section className="timeline-explorer">
+        <div className="timeline">
+          {events.map((event, index) => (
+            <button className={`tl-item ${selectedEvent?.id === event.id ? "active" : ""}`} key={event.id} onClick={() => setSelectedId(event.id)}>
+              <span className="tl-marker"><span className="tl-dot" />{index < events.length - 1 && <span className="tl-line" />}</span>
+              <span className="tl-content">
+                <span className="tl-year">{event.year}</span>
+                <strong className="tl-title">{event.title}</strong>
+                <span className="tl-meta">{event.region} · {event.category}</span>
+              </span>
+            </button>
+          ))}
+          {events.length === 0 && <p className="timeline-empty">No events match these filters.</p>}
+        </div>
+
+        {selectedEvent && (
+          <article className="timeline-record" key={selectedEvent.id}>
+            <div className="record-heading">
+              <span className="panel-kicker">{selectedEvent.year} · {selectedEvent.region}</span>
+              <h2>{selectedEvent.title}</h2>
+              <p>{selectedEvent.description}</p>
+            </div>
+            <div className="record-insights">
+              <div><span>What changed?</span><p>{selectedEvent.change}</p></div>
+              <div><span>Why it matters</span><p>{selectedEvent.significance}</p></div>
+            </div>
+            <div className="record-related">
+              <span className="panel-kicker">Continue exploring</span>
+              <div>{selectedEvent.relatedTerms.map((term) => <button key={term} onClick={() => navigate(`/glossary?term=${encodeURIComponent(term)}`)}>{term}</button>)}</div>
+              <button className="record-type-link" onClick={() => navigate(`/jenis/${selectedEvent.relatedType}`)}>Explore the related wayang tradition →</button>
+            </div>
+          </article>
+        )}
+      </section>
     </div>
   );
 }

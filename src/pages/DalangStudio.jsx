@@ -40,6 +40,14 @@ export default function DalangStudio() {
   const [shadowMode, setShadowMode] = useState(true);
   const [activeMood, setActiveMood] = useState(scene.defaultMood);
   const [failedImages, setFailedImages] = useState({});
+  const [decisions, setDecisions] = useState({});
+  const [earnedBadges, setEarnedBadges] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("wayang-studio-badges") || "[]");
+    } catch {
+      return [];
+    }
+  });
 
   const stageRef = useRef(null);
   const dragging = useRef(null);
@@ -50,6 +58,12 @@ export default function DalangStudio() {
   const stageImage = typeImages[scene.typeId];
   const progress = ((stepIndex + 1) / scene.steps.length) * 100;
   const isFinalStep = stepIndex === scene.steps.length - 1;
+  const decisionKey = `${scene.id}-${stepIndex}`;
+  const selectedDecisionId = decisions[decisionKey];
+  const selectedDecision = currentStep.decision?.choices.find(
+    (choice) => choice.id === selectedDecisionId
+  );
+  const decisionComplete = !currentStep.decision || Boolean(selectedDecisionId);
   const stepTargets = currentStep.targets || [];
   const targetChecks = stepTargets.map((target) => {
     const position = positions[target.character];
@@ -70,7 +84,7 @@ export default function DalangStudio() {
   const shadowRequirementMet =
     typeof currentStep.requiresShadowMode !== "boolean" ||
     shadowMode === currentStep.requiresShadowMode;
-  const isCurrentStepCorrect = targetsComplete && shadowRequirementMet;
+  const isCurrentStepCorrect = targetsComplete && shadowRequirementMet && decisionComplete;
   const challengeInstruction = [
     !targetsComplete &&
       `Move ${targetNames} into ${targetChecks.length > 1 ? "their glowing targets" : "the glowing target"}.`,
@@ -78,6 +92,7 @@ export default function DalangStudio() {
       (currentStep.requiresShadowMode
         ? "Turn Shadow Play On."
         : "Switch to Normal Photo Mode."),
+    !decisionComplete && "Make a storytelling decision.",
   ]
     .filter(Boolean)
     .join(" ");
@@ -86,6 +101,10 @@ export default function DalangStudio() {
       ? "Scene complete."
       : "Correct. Next cue unlocked."
     : challengeInstruction;
+  const visibleBadges =
+    isFinalStep && isCurrentStepCorrect && !earnedBadges.includes(scene.id)
+      ? [...earnedBadges, scene.id]
+      : earnedBadges;
 
   useEffect(() => {
     const handleMove = (event) => {
@@ -118,13 +137,23 @@ export default function DalangStudio() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isFinalStep || !isCurrentStepCorrect || earnedBadges.includes(scene.id)) return;
+    const nextBadges = [...earnedBadges, scene.id];
+    localStorage.setItem("wayang-studio-badges", JSON.stringify(nextBadges));
+  }, [earnedBadges, isCurrentStepCorrect, isFinalStep, scene.id]);
+
   const handleSceneChange = (id) => {
     const nextScene = studioScenes.find((item) => item.id === id) || studioScenes[0];
+    if (isFinalStep && isCurrentStepCorrect && !earnedBadges.includes(scene.id)) {
+      setEarnedBadges((badges) => [...badges, scene.id]);
+    }
     setSceneId(nextScene.id);
     setStepIndex(0);
     setSelectedCharacterId(nextScene.steps[0]?.focus || nextScene.characters[0]);
     setPositions(nextScene.initialPositions);
     setActiveMood(nextScene.defaultMood);
+    setDecisions({});
   };
 
   const handlePuppetDown = (event, id) => {
@@ -169,6 +198,7 @@ export default function DalangStudio() {
     setStepIndex(0);
     setSelectedCharacterId(scene.steps[0]?.focus || scene.characters[0]);
     setActiveMood(scene.defaultMood);
+    setDecisions({});
   };
 
   const goToStep = (direction) => {
@@ -266,11 +296,28 @@ export default function DalangStudio() {
             </button>
           </div>
 
+          <div className="studio-achievements">
+            <span className="panel-kicker">Dalang journey</span>
+            <div>
+              {studioScenes.map((item) => (
+                <span key={item.id} className={visibleBadges.includes(item.id) ? "earned" : ""}>
+                  <b>{visibleBadges.includes(item.id) ? "Mastered" : "Locked"}</b>
+                  {item.title}
+                </span>
+              ))}
+            </div>
+          </div>
+
           <div
             ref={stageRef}
             className={`studio-stage mood-${activeMood} ${shadowMode ? "shadow-mode" : ""}`}
           >
             <div className="stage-lamp" />
+            <div className="stage-embers" aria-hidden="true">
+              {Array.from({ length: 12 }, (_, index) => (
+                <span key={index} style={{ "--ember-index": index }} />
+              ))}
+            </div>
             <div className="stage-screen">
               {stageImage && (
                 <img
@@ -375,10 +422,45 @@ export default function DalangStudio() {
               )}
               <p className="learning-point">{currentStep.learningPoint}</p>
 
+              {currentStep.decision && (
+                <div className="story-decision">
+                  <span className="panel-kicker">Direct the meaning</span>
+                  <h4>{currentStep.decision.question}</h4>
+                  <div className="decision-options">
+                    {currentStep.decision.choices.map((choice) => (
+                      <button
+                        key={choice.id}
+                        className={selectedDecisionId === choice.id ? "active" : ""}
+                        onClick={() =>
+                          setDecisions((previous) => ({
+                            ...previous,
+                            [decisionKey]: choice.id,
+                          }))
+                        }
+                      >
+                        {choice.label}
+                      </button>
+                    ))}
+                  </div>
+                  {selectedDecision && (
+                    <div className="decision-result">
+                      <strong>{selectedDecision.result}</strong>
+                      <span>{selectedDecision.insight}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {isFinalStep && (
                 <div className="reflection-card">
                   <strong>Audience reflection</strong>
                   <p>{scene.reflection}</p>
+                  {isCurrentStepCorrect && (
+                    <div className="badge-unlock">
+                      <span>Performance badge earned</span>
+                      <strong>{scene.title} · Master Dalang</strong>
+                    </div>
+                  )}
                 </div>
               )}
 

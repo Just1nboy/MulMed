@@ -5,6 +5,7 @@ const links = [
   { path: "/jenis", label: "Types" },
   { path: "/timeline", label: "Timeline" },
   { path: "/studio", label: "Studio" },
+  { path: "/symbolism", label: "Symbols" },
   { path: "/glossary", label: "Glossary" },
   { path: "/quiz", label: "Quiz" },
 ];

@@ -36,15 +36,35 @@
   border-radius: var(--radius-md);
   padding: 1.5rem;
   text-align: left;
-  transition: all 0.15s;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  isolation: isolate;
+}
+
+.type-card::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: -40%;
+  left: -65%;
+  width: 36%;
+  height: 190%;
+  transform: rotate(24deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 236, 185, 0.1), transparent);
+  transition: left 0.7s ease;
+  pointer-events: none;
+}
+
+.type-card:hover::after {
+  left: 130%;
 }
 
 .type-card:hover {
   border-color: var(--accent);
   box-shadow: var(--shadow-md);
-  transform: translateY(-4px);
+  transform: translateY(-7px);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(201, 164, 86, 0.08);
 }
 
 .type-card-top {
@@ -95,6 +115,13 @@
   border-radius: var(--radius-sm);
   margin-bottom: 1rem;
   background: var(--bg-alt);
+  filter: saturate(0.76) contrast(1.05);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.type-card:hover .type-card-img {
+  filter: saturate(1) contrast(1.08);
+  transform: scale(1.015);
 }
 
 /* Comparison table */
@@ -148,4 +175,33 @@
   .type-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Museum catalogue layout */
+.type-card {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.type-card::after {
+  display: none;
+}
+
+.type-card:hover {
+  transform: none;
+  box-shadow: inset 4px 0 0 var(--accent);
+}
+
+.type-card-img {
+  border: 1px solid var(--border);
+  border-radius: 0;
+}
+
+.type-card:hover .type-card-img {
+  transform: none;
+  filter: saturate(0.9) contrast(1.08);
+}
+
+.comparison-table-wrap {
+  border-radius: 0;
 }
