@@ -29,18 +29,20 @@ export default function SymbolismExplorer() {
       <section className="symbolism-shell animate-fade-in-up delay-1">
         <div className="symbolism-visual">
           <div className="symbolism-lamp" />
-          <img src={characterImages.arjuna} alt="Traditional Arjuna wayang puppet" />
-          {symbolismHotspots.map((item, index) => (
-            <button
-              key={item.id}
-              className={`symbol-hotspot ${activeId === item.id ? "active" : ""} ${discovered.includes(item.id) ? "discovered" : ""}`}
-              style={{ left: `${item.x}%`, top: `${item.y}%`, "--hotspot-delay": `${index * 0.12}s` }}
-              onClick={() => reveal(item.id)}
-              aria-label={`Explore ${item.label}`}
-            >
-              <span>{index + 1}</span>
-            </button>
-          ))}
+          <div className="symbolism-image-stage">
+            <img src={characterImages.arjuna} alt="Traditional Arjuna wayang puppet" />
+            {symbolismHotspots.map((item, index) => (
+              <button
+                key={item.id}
+                className={`symbol-hotspot ${activeId === item.id ? "active" : ""} ${discovered.includes(item.id) ? "discovered" : ""}`}
+                style={{ left: `${item.x}%`, top: `${item.y}%`, "--hotspot-delay": `${index * 0.12}s` }}
+                onClick={() => reveal(item.id)}
+                aria-label={`Explore ${item.label}`}
+              >
+                <span>{index + 1}</span>
+              </button>
+            ))}
+          </div>
           <div className="symbolism-caption">Arjuna · The refined knight</div>
         </div>
 

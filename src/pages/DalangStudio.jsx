@@ -3,9 +3,16 @@ import Nav from "../components/Nav";
 import { wayangTypes } from "../data/wayang";
 import { characterImages, typeImages } from "../data/images";
 import { studioMoods, studioScenes } from "../data/studioScenes";
+import { useAudio } from "../audio/AudioContext";
 import "./DalangStudio.css";
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+const gestureOptions = [
+  { id: "bow", label: "Bow", meaning: "Respect and restraint" },
+  { id: "speak", label: "Speak", meaning: "Command attention" },
+  { id: "strike", label: "Strike", meaning: "Force and conflict" },
+  { id: "tremble", label: "Tremble", meaning: "Fear or uncertainty" },
+];
 
 function getStagePoint(event, stage) {
   const rect = stage.getBoundingClientRect();
@@ -30,7 +37,161 @@ function getCharacterMap() {
     }, {});
 }
 
+function getDirectorProfile(decisions, usedGestures, moodChanges) {
+  const choiceIds = Object.values(decisions);
+  const reflectiveChoices = choiceIds.filter((id) =>
+    ["quiet", "empathy"].includes(id)
+  ).length;
+  const forcefulChoices = choiceIds.filter((id) =>
+    ["defiant", "urgency"].includes(id)
+  ).length;
+  const expressiveActions = usedGestures.length + moodChanges;
+
+  if (reflectiveChoices > forcefulChoices) {
+    return {
+      title: "The Reflective Dalang",
+      description:
+        "You direct through stillness, empathy, and carefully controlled movement.",
+      accent: "wisdom",
+    };
+  }
+
+  if (forcefulChoices > reflectiveChoices) {
+    return {
+      title: "The Dramatic Dalang",
+      description:
+        "You build urgency through confrontation, momentum, and decisive staging.",
+      accent: "battle",
+    };
+  }
+
+  if (expressiveActions >= 5) {
+    return {
+      title: "The Expressive Dalang",
+      description:
+        "You use movement, atmosphere, and gesture to make every cue visible.",
+      accent: "victory",
+    };
+  }
+
+  return {
+    title: "The Keeper of Balance",
+    description:
+      "You let composition, story, and moral meaning support one another.",
+    accent: "devotion",
+  };
+}
+
+function PerformanceReplay({
+  scene,
+  charactersById,
+  performance,
+  profile,
+  onClose,
+  onReplay,
+}) {
+  const [beatIndex, setBeatIndex] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const beat = performance[beatIndex];
+
+  useEffect(() => {
+    if (!playing || performance.length < 2) return undefined;
+    const timer = window.setTimeout(() => {
+      if (beatIndex === performance.length - 1) {
+        setPlaying(false);
+      } else {
+        setBeatIndex((index) => index + 1);
+      }
+    }, 4200);
+    return () => window.clearTimeout(timer);
+  }, [beatIndex, performance.length, playing]);
+
+  if (!beat) return null;
+
+  return (
+    <div className="performance-overlay" role="dialog" aria-modal="true" aria-label="Your Wayang performance">
+      <div className="performance-shell">
+        <div className="performance-topbar">
+          <div>
+            <span className="panel-kicker">Your completed lakon</span>
+            <h2>{scene.title}</h2>
+          </div>
+          <button className="performance-close" onClick={onClose} aria-label="Close performance">
+            &times;
+          </button>
+        </div>
+
+        <div className={`performance-stage mood-${beat.mood} ${beat.shadowMode ? "shadow-mode" : ""}`}>
+          <div className="performance-screen">
+            <span className="performance-lamp" />
+            {scene.characters.map((id) => {
+              const character = charactersById[id];
+              const position = beat.positions[id];
+              const gesture = beat.gestures[id];
+              return (
+                <div
+                  key={id}
+                  className={`performance-puppet ${position.flip ? "flip" : ""} gesture-${gesture || "still"}`}
+                  style={{
+                    left: `${position.x}%`,
+                    bottom: `${position.y}%`,
+                    "--puppet-scale": position.scale,
+                  }}
+                >
+                  <img src={characterImages[id]} alt={character.name} />
+                  <span>{character.name}</span>
+                </div>
+              );
+            })}
+            <div className="performance-subtitle" key={`${beatIndex}-${beat.title}`}>
+              <span>Cue {beatIndex + 1} of {performance.length}</span>
+              <p>{beat.narration}</p>
+              {beat.interpretation && <strong>{beat.interpretation}</strong>}
+            </div>
+          </div>
+        </div>
+
+        <div className="performance-footer">
+          <div className={`director-profile profile-${profile.accent}`}>
+            <span>Your interpretation</span>
+            <strong>{profile.title}</strong>
+            <p>{profile.description}</p>
+          </div>
+          <div className="performance-controls">
+            <div className="performance-timeline">
+              {performance.map((item, index) => (
+                <button
+                  key={`${item.title}-${index}`}
+                  className={index === beatIndex ? "active" : ""}
+                  onClick={() => {
+                    setBeatIndex(index);
+                    setPlaying(false);
+                  }}
+                  aria-label={`Show cue ${index + 1}: ${item.title}`}
+                />
+              ))}
+            </div>
+            <button
+              className="control-btn"
+              onClick={() => {
+                setBeatIndex(0);
+                setPlaying(true);
+              }}
+            >
+              Play Again
+            </button>
+            <button className="btn-primary" onClick={onReplay}>
+              Direct Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function DalangStudio() {
+  const { playSfx } = useAudio();
   const charactersById = useMemo(() => getCharacterMap(), []);
   const [sceneId, setSceneId] = useState(studioScenes[0].id);
   const scene = studioScenes.find((item) => item.id === sceneId) || studioScenes[0];
@@ -41,6 +202,11 @@ export default function DalangStudio() {
   const [activeMood, setActiveMood] = useState(scene.defaultMood);
   const [failedImages, setFailedImages] = useState({});
   const [decisions, setDecisions] = useState({});
+  const [gestures, setGestures] = useState({});
+  const [usedGestures, setUsedGestures] = useState([]);
+  const [moodChanges, setMoodChanges] = useState(0);
+  const [performance, setPerformance] = useState([]);
+  const [showPerformance, setShowPerformance] = useState(false);
   const [earnedBadges, setEarnedBadges] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("wayang-studio-badges") || "[]");
@@ -84,10 +250,32 @@ export default function DalangStudio() {
   const shadowRequirementMet =
     typeof currentStep.requiresShadowMode !== "boolean" ||
     shadowMode === currentStep.requiresShadowMode;
-  const isCurrentStepCorrect = targetsComplete && shadowRequirementMet && decisionComplete;
+  const moodRequirementMet = !currentStep.mood || activeMood === currentStep.mood;
+  const requiredGesture = currentStep.requiredGesture;
+  const gestureRequirementMet =
+    !requiredGesture || gestures[requiredGesture.character] === requiredGesture.gesture;
+  const requiredGestureCharacter = requiredGesture
+    ? charactersById[requiredGesture.character]?.name || requiredGesture.character
+    : "";
+  const requiredMoodLabel = currentStep.mood
+    ? studioMoods[currentStep.mood]?.label || currentStep.mood
+    : "";
+  const requiredGestureLabel = requiredGesture
+    ? gestureOptions.find((gesture) => gesture.id === requiredGesture.gesture)?.label ||
+      requiredGesture.gesture
+    : "";
+  const isCurrentStepCorrect =
+    targetsComplete &&
+    shadowRequirementMet &&
+    moodRequirementMet &&
+    gestureRequirementMet &&
+    decisionComplete;
   const challengeInstruction = [
     !targetsComplete &&
       `Move ${targetNames} into ${targetChecks.length > 1 ? "their glowing targets" : "the glowing target"}.`,
+    !moodRequirementMet && `Set the atmosphere to ${requiredMoodLabel}.`,
+    !gestureRequirementMet &&
+      `Make ${requiredGestureCharacter} perform ${requiredGestureLabel}.`,
     !shadowRequirementMet &&
       (currentStep.requiresShadowMode
         ? "Turn Shadow Play On."
@@ -105,6 +293,7 @@ export default function DalangStudio() {
     isFinalStep && isCurrentStepCorrect && !earnedBadges.includes(scene.id)
       ? [...earnedBadges, scene.id]
       : earnedBadges;
+  const directorProfile = getDirectorProfile(decisions, usedGestures, moodChanges);
 
   useEffect(() => {
     const handleMove = (event) => {
@@ -154,6 +343,11 @@ export default function DalangStudio() {
     setPositions(nextScene.initialPositions);
     setActiveMood(nextScene.defaultMood);
     setDecisions({});
+    setGestures({});
+    setUsedGestures([]);
+    setMoodChanges(0);
+    setPerformance([]);
+    setShowPerformance(false);
   };
 
   const handlePuppetDown = (event, id) => {
@@ -193,21 +387,72 @@ export default function DalangStudio() {
     }));
   };
 
+  const performGesture = (gesture) => {
+    if (!selectedCharacterId) return;
+    setGestures((previous) => ({ ...previous, [selectedCharacterId]: gesture }));
+    setUsedGestures((previous) =>
+      previous.includes(gesture) ? previous : [...previous, gesture]
+    );
+    playSfx(gesture === "strike" ? "wrong" : "correct");
+  };
+
+  const chooseMood = (mood) => {
+    if (mood !== activeMood) setMoodChanges((count) => count + 1);
+    setActiveMood(mood);
+  };
+
+  const chooseDecision = (choiceId) => {
+    setDecisions((previous) => ({
+      ...previous,
+      [decisionKey]: choiceId,
+    }));
+  };
+
+  const captureBeat = () => {
+    const interpretation = selectedDecision
+      ? `${selectedDecision.result} ${selectedDecision.insight}`
+      : currentStep.learningPoint;
+
+    return {
+      title: currentStep.title,
+      narration: currentStep.narration,
+      interpretation,
+      mood: activeMood,
+      shadowMode,
+      positions: structuredClone(positions),
+      gestures: { ...gestures },
+    };
+  };
+
   const resetScene = () => {
     setPositions(scene.initialPositions);
     setStepIndex(0);
     setSelectedCharacterId(scene.steps[0]?.focus || scene.characters[0]);
     setActiveMood(scene.defaultMood);
     setDecisions({});
+    setGestures({});
+    setUsedGestures([]);
+    setMoodChanges(0);
+    setPerformance([]);
+    setShowPerformance(false);
   };
 
   const goToStep = (direction) => {
     if (direction > 0 && !isCurrentStepCorrect) return;
 
     const nextIndex = clamp(stepIndex + direction, 0, scene.steps.length - 1);
+    if (direction > 0) {
+      setPerformance((beats) => [...beats.slice(0, stepIndex), captureBeat()]);
+    }
     setStepIndex(nextIndex);
-    setActiveMood(scene.steps[nextIndex]?.mood || scene.defaultMood);
     setSelectedCharacterId(scene.steps[nextIndex]?.focus || scene.characters[0]);
+  };
+
+  const watchPerformance = () => {
+    if (!isCurrentStepCorrect) return;
+    setPerformance((beats) => [...beats.slice(0, stepIndex), captureBeat()]);
+    setShowPerformance(true);
+    playSfx("correct");
   };
 
   return (
@@ -365,7 +610,7 @@ export default function DalangStudio() {
                 return (
                   <button
                     key={id}
-                    className={`stage-puppet ${isSelected ? "selected" : ""} ${isFocused ? "focused" : ""} ${position.flip ? "flip" : ""}`}
+                    className={`stage-puppet ${isSelected ? "selected" : ""} ${isFocused ? "focused" : ""} ${position.flip ? "flip" : ""} gesture-${gestures[id] || "still"}`}
                     style={{
                       left: `${position.x}%`,
                       bottom: `${position.y}%`,
@@ -412,7 +657,9 @@ export default function DalangStudio() {
                 <strong>Dalang cue:</strong> {currentStep.cue}
               </div>
               {(targetChecks.length > 0 ||
-                typeof currentStep.requiresShadowMode === "boolean") && (
+                typeof currentStep.requiresShadowMode === "boolean" ||
+                currentStep.mood ||
+                currentStep.requiredGesture) && (
                 <div className={`target-status ${isCurrentStepCorrect ? "complete" : ""}`}>
                   <strong>
                     {isCurrentStepCorrect ? "Challenge complete" : "Challenge locked"}
@@ -420,6 +667,36 @@ export default function DalangStudio() {
                   <span>{challengeStatus}</span>
                 </div>
               )}
+              <div className="cue-requirements" aria-label="Cue requirements">
+                <span className={targetsComplete ? "complete" : ""}>
+                  <b>{targetsComplete ? "Complete" : "Stage"}</b>
+                  Place {targetNames || "the cast"}
+                </span>
+                {currentStep.mood && (
+                  <span className={moodRequirementMet ? "complete" : ""}>
+                    <b>{moodRequirementMet ? "Complete" : "Atmosphere"}</b>
+                    {requiredMoodLabel}
+                  </span>
+                )}
+                {requiredGesture && (
+                  <span className={gestureRequirementMet ? "complete" : ""}>
+                    <b>{gestureRequirementMet ? "Complete" : "Gesture"}</b>
+                    {requiredGestureCharacter}: {requiredGestureLabel}
+                  </span>
+                )}
+                {typeof currentStep.requiresShadowMode === "boolean" && (
+                  <span className={shadowRequirementMet ? "complete" : ""}>
+                    <b>{shadowRequirementMet ? "Complete" : "Stage mode"}</b>
+                    {currentStep.requiresShadowMode ? "Shadow Play" : "Normal Photo"}
+                  </span>
+                )}
+                {currentStep.decision && (
+                  <span className={decisionComplete ? "complete" : ""}>
+                    <b>{decisionComplete ? "Complete" : "Interpretation"}</b>
+                    Direct the meaning
+                  </span>
+                )}
+              </div>
               <p className="learning-point">{currentStep.learningPoint}</p>
 
               {currentStep.decision && (
@@ -431,12 +708,7 @@ export default function DalangStudio() {
                       <button
                         key={choice.id}
                         className={selectedDecisionId === choice.id ? "active" : ""}
-                        onClick={() =>
-                          setDecisions((previous) => ({
-                            ...previous,
-                            [decisionKey]: choice.id,
-                          }))
-                        }
+                        onClick={() => chooseDecision(choice.id)}
                       >
                         {choice.label}
                       </button>
@@ -469,8 +741,12 @@ export default function DalangStudio() {
                   Previous
                 </button>
                 {isFinalStep ? (
-                  <button className="btn-primary" onClick={resetScene}>
-                    Replay Scene
+                  <button
+                    className="btn-primary"
+                    onClick={watchPerformance}
+                    disabled={!isCurrentStepCorrect}
+                  >
+                    Watch Your Performance
                   </button>
                 ) : (
                   <button
@@ -504,12 +780,29 @@ export default function DalangStudio() {
                     <button onClick={() => moveSelected(0, -6)}>Down</button>
                   </div>
 
+                  <div className="gesture-controls">
+                    <span className="panel-kicker">Expressive gesture</span>
+                    <div>
+                      {gestureOptions.map((gesture) => (
+                        <button
+                          key={gesture.id}
+                          className={gestures[selectedCharacterId] === gesture.id ? "active" : ""}
+                          onClick={() => performGesture(gesture.id)}
+                          title={gesture.meaning}
+                        >
+                          <strong>{gesture.label}</strong>
+                          <span>{gesture.meaning}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="mood-list">
                     {Object.entries(studioMoods).map(([mood, moodInfo]) => (
                       <button
                         key={mood}
                         className={`mood-chip ${activeMood === mood ? "active" : ""}`}
-                        onClick={() => setActiveMood(mood)}
+                        onClick={() => chooseMood(mood)}
                       >
                         <strong>{moodInfo.label}</strong>
                         <span>{moodInfo.description}</span>
@@ -533,6 +826,17 @@ export default function DalangStudio() {
         available. Shadow mode stylizes the same real images into a kelir-style
         performance view.
       </p>
+
+      {showPerformance && (
+        <PerformanceReplay
+          scene={scene}
+          charactersById={charactersById}
+          performance={performance}
+          profile={directorProfile}
+          onClose={() => setShowPerformance(false)}
+          onReplay={resetScene}
+        />
+      )}
     </div>
   );
 }

@@ -2,8 +2,8 @@ export const symbolismHotspots = [
   {
     id: "head",
     label: "Head Position",
-    x: 50,
-    y: 19,
+    x: 42,
+    y: 43,
     title: "Character is shown through posture",
     description:
       "A lowered head often suggests refinement, patience, or humility. A lifted head can communicate confidence, pride, or aggression.",
@@ -12,8 +12,8 @@ export const symbolismHotspots = [
   {
     id: "eyes",
     label: "Eyes",
-    x: 56,
-    y: 25,
+    x: 34,
+    y: 38,
     title: "Eyes reveal temperament",
     description:
       "Narrow, downward-looking eyes are associated with calm and controlled characters. Wide, round eyes often signal forceful energy.",
@@ -22,8 +22,8 @@ export const symbolismHotspots = [
   {
     id: "crown",
     label: "Crown",
-    x: 47,
-    y: 9,
+    x: 48,
+    y: 30,
     title: "Ornaments communicate status",
     description:
       "Elaborate crowns and headdresses can identify royalty, divine power, or a character's place within the story world.",
@@ -32,8 +32,8 @@ export const symbolismHotspots = [
   {
     id: "arms",
     label: "Arms",
-    x: 32,
-    y: 49,
+    x: 65,
+    y: 52,
     title: "Gesture becomes dialogue",
     description:
       "Long articulated arms let the dalang communicate emotion through precise movement. Slow gestures feel composed; sharp gestures create conflict.",
@@ -42,7 +42,7 @@ export const symbolismHotspots = [
   {
     id: "body",
     label: "Body Shape",
-    x: 53,
+    x: 51,
     y: 51,
     title: "Silhouette signals personality",
     description:
@@ -52,8 +52,8 @@ export const symbolismHotspots = [
   {
     id: "color",
     label: "Color & Detail",
-    x: 58,
-    y: 70,
+    x: 54,
+    y: 64,
     title: "Decoration carries meaning",
     description:
       "Gold decoration suggests nobility and sacred power. Strong contrasting colors help audiences recognize emotion, identity, and rank.",

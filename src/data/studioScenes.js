@@ -21,9 +21,10 @@ export const studioScenes = [
     steps: [
       {
         title: "A Messenger Arrives",
-        cue: "Move Hanoman quietly to the left side of the screen.",
+        cue: "Set a mysterious atmosphere, move Hanoman quietly to the left side, and make him bow.",
         focus: "hanoman",
         mood: "mystery",
+        requiredGesture: { character: "hanoman", gesture: "bow" },
         targets: [
           {
             character: "hanoman",
@@ -40,9 +41,10 @@ export const studioScenes = [
       },
       {
         title: "Sinta Stands Firm",
-        cue: "Bring Sinta forward and keep Rahwana distant.",
+        cue: "Set a devotional atmosphere, bring Sinta forward, and make her bow with controlled strength.",
         focus: "sinta",
         mood: "devotion",
+        requiredGesture: { character: "sinta", gesture: "bow" },
         targets: [
           {
             character: "sinta",
@@ -76,9 +78,10 @@ export const studioScenes = [
       },
       {
         title: "Rahwana's Threat",
-        cue: "Move Rahwana closer, then switch to Shadow Play.",
+        cue: "Set a battle atmosphere, move Rahwana closer, make him strike, then switch to Shadow Play.",
         focus: "rahwana",
         mood: "battle",
+        requiredGesture: { character: "rahwana", gesture: "strike" },
         requiresShadowMode: true,
         targets: [
           {
@@ -96,9 +99,10 @@ export const studioScenes = [
       },
       {
         title: "Fire Becomes a Signal",
-        cue: "Move Hanoman across the stage quickly.",
+        cue: "Set a victorious atmosphere, move Hanoman across the stage, and make him speak to signal hope.",
         focus: "hanoman",
         mood: "victory",
+        requiredGesture: { character: "hanoman", gesture: "speak" },
         targets: [
           {
             character: "hanoman",
@@ -137,9 +141,10 @@ export const studioScenes = [
     steps: [
       {
         title: "Arjuna Hesitates",
-        cue: "Place Arjuna near the center and lower the mood.",
+        cue: "Set a wise atmosphere, place Arjuna near the center, and make him tremble with doubt.",
         focus: "arjuna",
         mood: "wisdom",
+        requiredGesture: { character: "arjuna", gesture: "tremble" },
         targets: [
           {
             character: "arjuna",
@@ -173,9 +178,10 @@ export const studioScenes = [
       },
       {
         title: "Bima Speaks Plainly",
-        cue: "Move Bima beside Arjuna as a steady presence.",
+        cue: "Set a devotional atmosphere, move Bima beside Arjuna, and make him speak plainly.",
         focus: "bima",
         mood: "devotion",
+        requiredGesture: { character: "bima", gesture: "speak" },
         targets: [
           {
             character: "bima",
@@ -192,9 +198,10 @@ export const studioScenes = [
       },
       {
         title: "Gatotkaca Looks Ahead",
-        cue: "Move Gatotkaca forward as if guarding the others.",
+        cue: "Set a battle atmosphere, move Gatotkaca forward, and make him strike a protective pose.",
         focus: "gatotkaca",
         mood: "battle",
+        requiredGesture: { character: "gatotkaca", gesture: "strike" },
         targets: [
           {
             character: "gatotkaca",
@@ -211,9 +218,10 @@ export const studioScenes = [
       },
       {
         title: "Dharma Takes Shape",
-        cue: "Arrange all three characters in balance across the kelir.",
+        cue: "Set a victorious atmosphere, arrange all three characters in balance, and make Arjuna bow.",
         focus: "arjuna",
         mood: "victory",
+        requiredGesture: { character: "arjuna", gesture: "bow" },
         targets: [
           {
             character: "arjuna",
