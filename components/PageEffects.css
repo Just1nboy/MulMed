@@ -1,0 +1,61 @@
+.page-effects {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.paper-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(231, 210, 166, 0.015) 3px 4px),
+    repeating-linear-gradient(90deg, transparent 0 7px, rgba(0, 0, 0, 0.018) 7px 8px);
+}
+
+.wayang-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 10px, rgba(190, 147, 74, 0.08) 10px 11px, transparent 11px) 0 0 / 82px 82px;
+}
+
+.route-transition {
+  position: fixed;
+  z-index: 500;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(190, 147, 74, 0.26) 50%, transparent 50.2%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 18px),
+    #171109;
+}
+
+.route-transition span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 54px;
+  height: 82px;
+  transform: translate(-50%, -50%);
+  clip-path: polygon(50% 0, 92% 31%, 72% 100%, 28% 100%, 8% 31%);
+  border: 1px solid #b58a45;
+  background: #24190e;
+}
+
+.route-transition.is-changing {
+  animation: inkWipe 0.58s ease both;
+}
+
+@keyframes inkWipe {
+  0% { opacity: 0; clip-path: inset(0 100% 0 0); }
+  28%, 45% { opacity: 1; clip-path: inset(0 0 0 0); }
+  100% { opacity: 0; clip-path: inset(0 0 0 100%); }
+}
