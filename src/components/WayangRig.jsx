@@ -21,7 +21,7 @@ export default function WayangRig({
   return (
     <div className="wayang-body">
       <img src={hanomanBody} alt="hanoman body" />
-g
+
       <div
         className="left-upper"
         style={{ transform: `rotate(${leftUpperRotation}deg)` }}
@@ -52,4 +52,3 @@ g
     </div>
   );
 }
-

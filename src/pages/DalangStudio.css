@@ -531,7 +531,16 @@
   transition: filter 0.18s, opacity 0.18s, transform 0.18s;
 }
 
-.stage-puppet.flip .puppet-frame img {
+.stage-puppet.flip .puppet-frame > img {
+  transform: scaleX(-1);
+}
+
+.hanoman-rig-viewport {
+  transform-origin: center;
+  transition: transform 0.18s;
+}
+
+.stage-puppet.flip .hanoman-rig-viewport {
   transform: scaleX(-1);
 }
 
