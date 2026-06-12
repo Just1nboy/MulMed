@@ -1311,6 +1311,117 @@
   background: var(--accent);
 }
 
+@media (min-width: 1201px) {
+  .studio-page {
+    max-width: 1600px;
+  }
+
+  .studio-shell {
+    grid-template-columns:
+      minmax(270px, 310px)
+      minmax(560px, 1fr)
+      minmax(290px, 340px);
+    grid-template-rows: auto auto auto auto auto;
+    gap: 1rem;
+  }
+
+  .studio-main,
+  .studio-controls-grid {
+    display: contents;
+  }
+
+  .studio-sidebar {
+    grid-column: 2;
+    grid-row: 3;
+    position: static;
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 0.75rem;
+  }
+
+  .studio-sidebar .studio-panel {
+    padding: 0.8rem;
+  }
+
+  .studio-sidebar .scene-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .studio-sidebar .cast-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .studio-sidebar .scene-option,
+  .studio-sidebar .cast-card {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 0.5rem;
+    padding: 0.45rem;
+  }
+
+  .studio-sidebar .scene-option img,
+  .studio-sidebar .cast-card img,
+  .studio-sidebar .cast-fallback {
+    width: 42px;
+    height: 42px;
+  }
+
+  .studio-toolbar {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .studio-achievements {
+    grid-column: 2;
+    grid-row: 4;
+  }
+
+  .studio-stage {
+    grid-column: 2;
+    grid-row: 2;
+    height: clamp(500px, calc(100vh - 220px), 680px);
+  }
+
+  .cue-panel,
+  .director-panel {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .cue-panel {
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+
+  .director-panel {
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+
+  .cue-panel .cue-actions {
+    position: sticky;
+    bottom: -1.15rem;
+    z-index: 2;
+    margin-inline: -1.15rem;
+    margin-bottom: -1.15rem;
+    padding: 0.9rem 1.15rem 1.15rem;
+    border-top: 1px solid var(--border-light);
+    background: linear-gradient(180deg, rgba(37, 29, 19, 0.94), var(--bg-card) 28%);
+  }
+
+  .studio-moral {
+    grid-column: 2;
+    grid-row: 5;
+  }
+}
+
 @keyframes performanceReveal {
   from { opacity: 0; }
   to { opacity: 1; }
