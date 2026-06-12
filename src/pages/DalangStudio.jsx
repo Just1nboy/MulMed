@@ -817,11 +817,11 @@ export default function DalangStudio() {
               {selectedPosition && (
                 <>
                   <div className="nudge-grid" aria-label="Move selected puppet">
-                    <button onClick={() => moveSelected(0, 6)}>Up</button>
-                    <button onClick={() => moveSelected(-6, 0)}>Left</button>
-                    <button onClick={flipSelected}>Flip</button>
-                    <button onClick={() => moveSelected(6, 0)}>Right</button>
-                    <button onClick={() => moveSelected(0, -6)}>Down</button>
+                    <button className="nudge-up" onClick={() => moveSelected(0, 6)}>Up</button>
+                    <button className="nudge-left" onClick={() => moveSelected(-6, 0)}>Left</button>
+                    <button className="nudge-right" onClick={() => moveSelected(6, 0)}>Right</button>
+                    <button className="nudge-down" onClick={() => moveSelected(0, -6)}>Down</button>
+                    <button className="nudge-flip" onClick={flipSelected}>Flip puppet</button>
                   </div>
 
                   <div className="gesture-controls">

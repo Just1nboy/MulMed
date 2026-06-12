@@ -659,6 +659,7 @@
 
 .target-status {
   display: flex;
+  flex-direction: column;
   gap: 0.65rem;
   align-items: flex-start;
   margin-top: 0.9rem;
@@ -672,7 +673,6 @@
 }
 
 .target-status strong {
-  flex-shrink: 0;
   color: var(--accent);
   font-size: 0.72rem;
   letter-spacing: 0.5px;
@@ -680,6 +680,8 @@
 }
 
 .target-status span {
+  display: block;
+  width: 100%;
   color: var(--text-secondary);
 }
 
@@ -961,12 +963,30 @@
   margin: 1rem 0;
 }
 
-.nudge-grid button:first-child {
+.nudge-grid .nudge-up {
   grid-column: 2;
+  grid-row: 1;
 }
 
-.nudge-grid button:last-child {
+.nudge-grid .nudge-left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.nudge-grid .nudge-right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.nudge-grid .nudge-down {
   grid-column: 2;
+  grid-row: 3;
+}
+
+.nudge-grid .nudge-flip {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  margin-top: 0.35rem;
 }
 
 .gesture-controls {
